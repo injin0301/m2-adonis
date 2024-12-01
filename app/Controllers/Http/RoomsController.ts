@@ -5,15 +5,18 @@ export default class RoomsController {
     async create({ response, request, view, auth, session }: HttpContextContract) {
         let name = request.input('name');
 
+        let rooms = await this.getRooms()
+        let user = await auth.use('web').authenticate();
+
         if(name == null) {
             response.status(404); 
-            return view.render('lobby', { error: 'A room need a name.' });
+            
+            return view.render('lobby', { error: 'A room need a name.', user: user, rooms });
         }  
 
         let roomexist = await Room.findBy('name', name);
         if(roomexist) {            
-            const rooms = await this.getRooms();
-            return view.render('lobby', { error: 'A room already exists with this name.', rooms });
+            return view.render('lobby', { error: 'A room already exists with this name.', rooms, user: user });
         }
 
         let room = new Room();
@@ -41,13 +44,17 @@ export default class RoomsController {
     }
 
     async deleteRoom({ view, auth, params, response}: HttpContextContract) { 
-        console.log("delete room : " + params.name)       
-        const room = await Room.findBy('name', params.name);
+        let roomName = params.name
+        if(roomName != undefined && roomName.includes('%20')) {
+            roomName = roomName.replaceAll("%20", " ")
+            console.log(roomName)
+        }       
+        const room = await Room.findBy('name', roomName);
         await room?.delete()
         const rooms = await this.getRooms()
         const user = await auth.use('web').authenticate();
-        console.log('params', params)   
-        console.log('params', auth) 
+        //console.log('params', params)   
+        //console.log('params', auth) 
         return view.render('lobby', { rooms : rooms, user: user })
     }
 }
