@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat App</title>  
+  <style>
+    body {
+        background-color : rgb(150, 204, 235);
+      } 
+    .content {
+        display: flex;      
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        width: 60%;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    }
+    input {
+        width: 250px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .inputdiv {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .button {
+        background-color: #77c07a; /* Couleur de fond principale */
+        color: white; /* Couleur du texte */
+        border: none; /* Retire la bordure */
+        padding: 15px 30px; /* Espacement interne */
+        font-size: 16px; /* Taille du texte */
+        font-weight: bold; /* Texte en gras */
+        border-radius: 50px; /* Bordures arrondies */
+        cursor: pointer; /* Curseur de pointeur */
+        transition: all 0.3s ease; /* Transition pour les effets */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+  
+      /* Effet au survol */
+      .button:hover {
+        background-color: #7ec782; /* Couleur légèrement plus foncée au survol */
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Accentue l'ombre */
+        transform: scale(1.05); /* Légère augmentation de la taille */
+      }
+  
+      /* Effet lorsque le bouton est enfoncé */
+      .button:active {
+        transform: scale(0.98); /* Légère réduction pour un effet de clic */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
+      }
+      #title {
+        text-align: center;
+        font-size: 2em;
+        font-style: italic;
+      }
+      hr {
+        border: none; /* Retire la bordure par défaut */
+        height: 2px; /* Épaisseur de la ligne */
+        background-color: #ddd; /* Couleur de la ligne */
+        margin: 20px 0; /* Espacement vertical */
+      }
+  </style>
+</head>
+<body>
+  
+    <div class="content">
+        <h1 id="title">Login</h1>
+        <span style="text-align: center;">You can login to the application</span>
+    </div>
+
+    <hr>
+
+    <div class="content">
+        <form method="post" action="{{ route('/login') }}">
+            <div class="inputdiv">
+                <span>Email :</span>
+                <input type="email" name="email" />
+            </div>
+
+            <div class="inputdiv">
+               <span>Password :</span> 
+               <input type="password" name="password" />
+            </div>
+            
+            <button class="button" type="submit">Login</button>
+        </form>
+        @if(error)
+            <p>{{ error }}</p>
+        @endif
+    </div>
+</body>
+</html>

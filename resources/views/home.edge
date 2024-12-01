@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color : rgb(150, 204, 235);
+    }    
+    .content {
+      display: flex;      
+      flex-direction: column;
+      justify-content: center;
+      margin: auto;
+      width: 60%;
+    }
+    /* Style pour le bouton */
+    .button {
+      background-color: #77c07a; /* Couleur de fond principale */
+      color: white; /* Couleur du texte */
+      border: none; /* Retire la bordure */
+      padding: 15px 30px; /* Espacement interne */
+      font-size: 16px; /* Taille du texte */
+      font-weight: bold; /* Texte en gras */
+      border-radius: 50px; /* Bordures arrondies */
+      cursor: pointer; /* Curseur de pointeur */
+      transition: all 0.3s ease; /* Transition pour les effets */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    /* Effet au survol */
+    .button:hover {
+      background-color: #7ec782; /* Couleur légèrement plus foncée au survol */
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Accentue l'ombre */
+      transform: scale(1.05); /* Légère augmentation de la taille */
+    }
+
+    /* Effet lorsque le bouton est enfoncé */
+    .button:active {
+      transform: scale(0.98); /* Légère réduction pour un effet de clic */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
+    }
+
+
+    #title {
+      text-align: center;
+      font-size: 2em;
+      font-style: italic;
+    }
+  </style>
+  <title>Chat App</title>  
+</head>
+<body>
+  
+    <div class="content">
+      <div class="content">
+          <img style="width: 300px; margin: auto;" src="/images/logo.png" />
+          <h1 id="title">Paper Stone Scissors</h1>
+          <h2 id="title">By Injin KIM M2 Dev Web</h2>
+      </div>
+
+      <div class="content">
+          <button class="button" onclick="goToLogin()">Login</button>
+          <button class="button" onclick="goToRegister()">Register</button>
+          <button class="button" onclick="goToLobby()">Rooms lobby</button>
+      </div>
+    </div>
+
+    <!-- Script JavaScript pour la redirection -->
+  <script>
+    function goToLogin() {
+      window.location.href = "{{ ('/login') }}";
+    }
+
+    function goToRegister() {
+        window.location.href = "{{ ('/register') }}";
+    }
+    function goToLobby() {
+      window.location.href = "{{ ('/lobby') }}";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat App</title>
+  <!-- Lien vers Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        text-align: center; 
+        background-color : rgb(150, 204, 235);
+    }
+    .chat-window { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
+    .message { margin: 5px 0; }    
+    .blocgame {
+        display: flex;      
+        flex-direction: row;
+        justify-content: center;
+        margin: auto;
+        width: 70%;
+    }
+    .content {
+        display: flex;      
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        width: 60%;
+    }
+    #blocconnect {
+        background-color: rgb(94, 180, 94);
+        width: 350px;
+        text-align: center;
+        padding: 5px;
+        color: white;
+        border-radius: 10px;
+      }
+      /* Style pour le bouton */
+    .back-button {
+        background-color: #555; /* Couleur de fond gris foncé */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px; /* Espace entre l'icône et le texte */
+        transition: background-color 0.3s ease;
+      }
+  
+      /* Effet de survol */
+      .back-button:hover {
+        background-color: #333; /* Gris encore plus foncé au survol */
+      }
+      #title {
+        text-align: center;
+        font-size: 2em;
+        font-style: italic;
+      }
+      /* Style pour la barre de séparation verticale */
+    .vertical-line {
+        width: 2px; /* Largeur de la barre */
+        height: 100px; /* Hauteur de la barre */
+        background-color: #ddd; /* Couleur de la barre */
+        margin: 0 20px; /* Espace autour de la barre */
+      }
+      .button {
+        background-color: #77c07a; /* Couleur de fond principale */
+        color: white; /* Couleur du texte */
+        border: none; /* Retire la bordure */
+        padding: 15px 30px; /* Espacement interne */
+        font-size: 16px; /* Taille du texte */
+        font-weight: bold; /* Texte en gras */
+        border-radius: 50px; /* Bordures arrondies */
+        cursor: pointer; /* Curseur de pointeur */
+        transition: all 0.3s ease; /* Transition pour les effets */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+  
+      /* Effet au survol */
+      .button:hover {
+        background-color: #7ec782; /* Couleur légèrement plus foncée au survol */
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Accentue l'ombre */
+        transform: scale(1.05); /* Légère augmentation de la taille */
+      }
+  
+      /* Effet lorsque le bouton est enfoncé */
+      .button:active {
+        transform: scale(0.98); /* Légère réduction pour un effet de clic */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
+      }
+      .button:disabled {
+        background-color: #ccc; /* Couleur de fond grise pour le bouton désactivé */
+        color: #666; /* Texte plus clair */
+        cursor: not-allowed; /* Curseur "interdit" pour indiquer qu'il est inactif */
+        opacity: 0.7; /* Réduction de l'opacité */
+      }
+      hr {
+        border: none; /* Retire la bordure par défaut */
+        height: 2px; /* Épaisseur de la ligne */
+        background-color: #ddd; /* Couleur de la ligne */
+        margin: 20px 0; /* Espacement vertical */
+      }
+  </style>
+</head>
+<body>
+    <div style="margin-bottom: 25px;" id="blocconnect">
+        <button class="back-button" style="margin-left: 10px; margin-right: 10px;" onclick="location.href='/lobby'"><i class="fas fa-arrow-left"></i></button>
+        <span>Connected as : {{ user.email }}</span>        
+    </div>
+    
+    @if(roomname)
+        <div style="width: 100%; margin-bottom: 30px" id="blocconnect">
+            <h2>Room name</h2>
+            <span style="font-size: 1.5em;">"{{ roomname }}"</span>
+        </div>        
+    @endif
+    
+    <hr>
+
+    <h1 id="title">Game</h1>
+    <div class="blocgame">
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <span style="font-size: 1.5em; font-weight: bold;">Me</span>
+            <img style="margin: auto; width: 150px; height: 150px;" id="imageDisplay" src="/images/defaut.png" alt="Image par défaut">            
+        </div>
+
+        <div class="vertical-line"></div> 
+
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <span style="font-size: 1.5em; font-weight: bold;">Other player</span>
+            <img id="imageOtherPlayer" style="width: 150px; height: 150px;" src="/images/defaut.png" />
+        </div>
+        
+    </div> 
+    
+    <div>
+        <div>                
+            <button class="button" id="btnStone" onclick="changeImg('stone')">Pierre</button>
+            <button class="button" id="btnPaper" onclick="changeImg('paper')">Feuille</button>
+            <button class="button" id="btnScissors" onclick="changeImg('scissors')">Ciseaux</button>
+         </div>
+         <button class="button" id="btnValid" onclick="sendAndValid()">Valider</button>
+    </div>
+
+    <div>
+        <span id="winner"></span>
+    </div>
+    
+    <hr>
+  <h1>Chat Application</h1>
+
+  <div class="chat-window" id="chat-window"></div>
+
+  <input id="message-input" type="text" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let selectedValue = '';
+
+    const socket = io({
+        auth: {
+            name: "{{ roomname }}"
+        }
+    });
+
+    socket.on('new message', (msg) => {
+        const chatWindow = document.getElementById('chat-window');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.textContent = `${msg.sender}: ${msg.content}`;
+        chatWindow.appendChild(messageDiv);
+    });
+
+    function sendMessage() {
+        const chatWindow = document.getElementById('chat-window');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        const input = document.getElementById('message-input');
+        messageDiv.textContent = `'{{user.email}}': ${input.value}`;
+        chatWindow.appendChild(messageDiv);
+        socket.emit('message', { sender: '{{user.email}}', content: input.value });
+        input.value = '';
+    }
+
+    function changeImg(type) {
+        const imageDisplay = document.getElementById('imageDisplay');
+        const waitForAnswer = false;
+
+        // Change l'image en fonction du type
+        if (type === 'paper') {
+            imageDisplay.src = '/images/paper.png'; // Chemin vers l'image de la feuille
+            this.selectedValue = 'paper';
+        } else if (type === 'stone') {
+            imageDisplay.src = '/images/stone.png'; // Chemin vers l'image de la pierre
+            this.selectedValue = 'stone';
+        } else if (type === 'scissors') {
+            imageDisplay.src = '/images/scissors.png'; // Chemin vers l'image des ciseaux
+            this.selectedValue = 'scissors';
+        }
+    }
+
+    function sendAndValid() {
+        document.getElementById('btnStone').disabled = true;
+        document.getElementById('btnPaper').disabled = true;
+        document.getElementById('btnScissors').disabled = true;
+        document.getElementById('btnValid').disabled = true;
+
+        const imageOtherPlayer = document.getElementById('imageOtherPlayer');
+        imageOtherPlayer.src = '/images/defaut.png';
+
+        const winner = document.getElementById('winner');
+        winner.textContent = '';
+
+        socket.emit('game', { sender: '{{user.email}}', content: this.selectedValue, room : '{{ roomname }}' });
+    }
+
+    socket.on('game', (msg) => {
+        console.log(msg)
+        if(msg.winner) {
+            document.getElementById('btnStone').disabled = false;
+            document.getElementById('btnPaper').disabled = false;
+            document.getElementById('btnScissors').disabled = false;
+            document.getElementById('btnValid').disabled = false;
+
+            const imageOtherPlayer = document.getElementById('imageOtherPlayer');
+            if(msg.player1 === '{{ user.email }}') {
+                imageOtherPlayer.src = '/images/'+msg.player2plays+'.png';
+            } else {
+                imageOtherPlayer.src = '/images/'+msg.player1plays+'.png';
+            }
+
+            const winner = document.getElementById('winner');
+            if(msg.winner === 'draw') {
+                winner.textContent = "It's a draw !"
+            }
+            else if(msg.winner === '{{ user.email }}') {
+                console.log("I win")
+                winner.textContent = 'Winner : ' + '{{ user.email }}'
+            } else {
+                console.log("I loose")
+                if(msg.player1 === '{{ user.email }}') {
+                    winner.textContent = 'Winner : ' + msg.player2
+                } else {
+                    winner.textContent = 'Winner : ' + msg.player1
+                }
+            }
+        }
+    })
+  </script>
+</body>
+</html>

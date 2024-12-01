@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat App</title>  
+  <!-- Lien vers la bibliothèque Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+        background-color : rgb(150, 204, 235);
+      } 
+    .content {
+        display: flex;      
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        width: 60%;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    }
+    input {
+        width: 250px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .inputdiv {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .button {
+        background-color: #77c07a; /* Couleur de fond principale */
+        color: white; /* Couleur du texte */
+        border: none; /* Retire la bordure */
+        padding: 15px 30px; /* Espacement interne */
+        font-size: 16px; /* Taille du texte */
+        font-weight: bold; /* Texte en gras */
+        border-radius: 50px; /* Bordures arrondies */
+        cursor: pointer; /* Curseur de pointeur */
+        transition: all 0.3s ease; /* Transition pour les effets */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre douce */
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+  
+      /* Effet au survol */
+      .button:hover {
+        background-color: #7ec782; /* Couleur légèrement plus foncée au survol */
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Accentue l'ombre */
+        transform: scale(1.05); /* Légère augmentation de la taille */
+      }
+  
+      /* Effet lorsque le bouton est enfoncé */
+      .button:active {
+        transform: scale(0.98); /* Légère réduction pour un effet de clic */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Réduction de l'ombre */
+      }
+      #title {
+        text-align: center;
+        font-size: 2em;
+        font-style: italic;
+      }
+      #blocconnect {
+        background-color: rgb(94, 180, 94);
+        width: 350px;
+        text-align: center;
+        padding: 5px;
+        color: white;
+        border-radius: 10px;
+      }
+
+       /* Style pour le bouton */
+    .refresh-button {
+        background-color: #3498db; /* Bleu clair */
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Espace entre l'icône et le texte */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+  
+      /* Style de l'icône */
+      .refresh-button i {
+        font-size: 18px;
+        transition: transform 0.3s ease; /* Transition pour l'effet de rotation */
+      }
+  
+      /* Effet de survol pour le bouton */
+      .refresh-button:hover {
+        background-color: #2980b9; /* Bleu plus foncé */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transform: scale(1.05); /* Agrandit légèrement le bouton */
+      }
+  
+      /* Effet de rotation au clic */
+      .refresh-button:active i {
+        transform: rotate(360deg); /* Rotation complète de l'icône */
+      }
+      .inputdiv {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    hr {
+        border: none; /* Retire la bordure par défaut */
+        height: 2px; /* Épaisseur de la ligne */
+        background-color: #ddd; /* Couleur de la ligne */
+        margin: 20px 0; /* Espacement vertical */
+      }
+      .icon-button {
+        background-color: #3498db; /* Couleur par défaut */
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.3s ease;
+      }
+      /* Bouton Join */
+    .join-button {
+        background-color: #28a745; /* Vert pour "join" */
+      }
+  
+      .join-button:hover {
+        background-color: #218838; /* Vert plus foncé au survol */
+      }
+  
+      /* Bouton Delete */
+      .delete-button {
+        background-color: #e74c3c; /* Rouge pour "delete" */
+      }
+  
+      .delete-button:hover {
+        background-color: #c0392b; /* Rouge plus foncé au survol */
+      }
+
+      .roombloc {
+        flex-direction: row;
+        justify-content: space-around;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+  </style>  
+</head>
+<body>    
+  
+    <div id="blocconnect">
+        <span>Connected as : {{ user.email }}</span>
+    </div>
+
+    <div class="content">
+        <h1 id="title">Lobby</h1>
+        <span style="text-align: center;">Welcome in the lobby select a room or create one</span>
+    </div>
+
+    <hr>
+
+    <div class="content">        
+        <h2 id="title">Create a room</h2>
+        <form method="post" action="{{ route('/room') }}">
+            <div class="inputdiv">
+                <span>Room name : </span>
+                <input type="text" name="name" />
+            </div>
+            
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <button class="button" type="submit">Create room</button>    
+                <div onclick="goToLobby()" class="refresh-button"><i class="fas fa-sync-alt"></i></div>            
+            </div>            
+        </form>
+        
+        @if(error)
+            <p>{{ error }}</p>
+        @endif
+        @if(message)
+            <p>{{ message }}</p>
+        @endif
+    </div>
+
+    <hr>
+
+    <div class="content">
+        <h2 id="title">Rooms opens</h2>
+        @each(room in rooms)
+            <div class="content roombloc">
+                <span> {{ room.name }} </span>
+                <button class="icon-button join-button"  onclick="location.href='/room?name={{room.name}}'"><i class="fas fa-user-plus"></i> Join</button>                
+                <button class="icon-button delete-button" type="button" onclick="deleteRoom('{{room.name}}')"><i class="fas fa-trash"></i> Delete</button>
+            </div>       
+            <hr>     
+        @end
+    </div>
+
+    <script>
+        function deleteRoom(name) {
+            console.log("delete room " + name)
+            axios.delete(`http://localhost:3333/room/${name}`)
+            .then(response => {
+                console.log(`Deleted post with ID ${name}`);
+                location.reload()
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+        function goToLobby() {
+            window.location.href = "{{ ('/lobby') }}";
+        }
+    </script>
+</body>
+</html>
