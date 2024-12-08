@@ -43,7 +43,7 @@ export default class RoomsController {
         return view.render('room', { roomname: roomName, user: user });
     }
 
-    async deleteRoom({ view, auth, params, response}: HttpContextContract) { 
+    async deleteRoom({ view, auth, params, response}: HttpContextContract) {
         let roomName = params.name
         if(roomName != undefined && roomName.includes('%20')) {
             roomName = roomName.replaceAll("%20", " ")
