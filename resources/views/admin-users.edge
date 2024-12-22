@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color : rgb(150, 204, 235);
+    }    
+    .content {
+      display: flex;      
+      flex-direction: column;
+      justify-content: center;
+      margin: auto;
+      width: 60%;
+    }
+    #title {
+      text-align: center;
+      font-size: 2em;
+      font-style: italic;
+    }
+  </style>
+  <title>Chat App</title>  
+</head>
+<body>
+  
+    <div class="content">
+      <div class="content">
+          <h1 id="title">Welcome ADMIN</h1>
+          <h2 id="title">List of users</h2>
+      </div>
+
+        @each(user in users)
+        <div class="" style="margin-bottom: 20px; text-align:center; font-size:2em;">
+            <strong>Email:</strong> {{ user.email }}<br>
+            <strong>Is Admin:</strong>
+            @if (user.is_admin)
+                <span style="color: green;">Yes</span>
+            @else
+                <span style="color: red;">No</span>
+            @endif
+        </div>
+        @endeach
+
+      
+    </div>
+
+   
+</body>
+</html>

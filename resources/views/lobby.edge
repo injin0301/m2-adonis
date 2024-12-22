@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat App</title>  
   <!-- Lien vers la bibliothèque Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     body {
@@ -163,10 +163,14 @@
       }
   </style>  
 </head>
-<body>    
-  
+<body>
     <div id="blocconnect">
+      <button class="back-button" style="margin-left: 10px; margin-right: 10px;" onclick="location.href='/'"><i class="fas fa-arrow-left"></i></button>
         <span>Connected as : {{ user.email }}</span>
+    </div>
+
+    <div style="float: right;">
+      <button onclick="logoff()" class="button">Log off</button>
     </div>
 
     <div class="content">
@@ -227,6 +231,17 @@
         }
         function goToLobby() {
             window.location.href = "{{ ('/lobby') }}";
+        }
+        function logoff() {
+          axios.post(`http://localhost:3333/logoff`)
+            .then(response => {
+                console.log(`Log off`);
+                location.reload()
+            })
+            .catch(error => {
+                location.reload()
+                console.error(error);
+            });
         }
     </script>
 </body>

@@ -4,10 +4,11 @@
  * Feel free to let us know via PR, if you find something broken in this config
  * file.
  */
-
 import Env from '@ioc:Adonis/Core/Env'
 import Application from '@ioc:Adonis/Core/Application'
 import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
+
+const dbPath = process.env.DATABASE_PATH || Application.tmpPath('db.sqlite3');
 
 const databaseConfig: DatabaseConfig = {
   /*
@@ -34,10 +35,11 @@ const databaseConfig: DatabaseConfig = {
     | npm i sqlite3
     |
     */
+
     sqlite: {
       client: 'sqlite',
       connection: {
-        filename: Application.tmpPath('db.sqlite3'),
+        filename: dbPath,
       },
       pool: {
         afterCreate: (conn, cb) => {

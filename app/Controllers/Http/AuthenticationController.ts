@@ -60,4 +60,9 @@ export default class AuthenticationController {
     const user = await auth.use('web').authenticate();
     return user;
     }
+
+    async logoff({ response, request, view, auth }: HttpContextContract) {
+        await auth.use('web').logout();
+        return view.render('home');
+    }
 }
