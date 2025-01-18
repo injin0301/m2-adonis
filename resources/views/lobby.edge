@@ -183,6 +183,7 @@
     <div class="content">        
         <h2 id="title">Create a room</h2>
         <form method="post" action="{{ route('/room') }}">
+            {{ csrfField() }}
             <div class="inputdiv">
                 <span>Room name : </span>
                 <input type="text" name="name" />

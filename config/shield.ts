@@ -92,7 +92,10 @@ export const csrf: ShieldConfig['csrf'] = {
 	| ```
   |
   */
-  exceptRoutes: [],
+  exceptRoutes: [
+    '/',
+    '/admin/users',
+  ],
 
   /*
   |--------------------------------------------------------------------------

@@ -23,6 +23,10 @@
   <title>Chat App</title>  
 </head>
 <body>
+
+  <div id="blocconnect">
+    <button class="back-button" style="margin-left: 10px; margin-right: 10px;" onclick="location.href='/'"><i class="fas fa-arrow-left"></i>Back to Home</button>
+  </div>
   
     <div class="content">
       <div class="content">
@@ -34,7 +38,7 @@
         <div class="" style="margin-bottom: 20px; text-align:center; font-size:2em;">
             <strong>Email:</strong> {{ user.email }}<br>
             <strong>Is Admin:</strong>
-            @if (user.is_admin)
+            @if (user.role_id == 2)
                 <span style="color: green;">Yes</span>
             @else
                 <span style="color: red;">No</span>

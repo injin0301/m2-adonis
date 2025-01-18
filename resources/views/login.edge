@@ -83,6 +83,7 @@
 
     <div class="content">
         <form method="post" action="{{ route('/login') }}">
+          {{ csrfField() }}
             <div class="inputdiv">
                 <span>Email :</span>
                 <input type="email" name="email" />

@@ -54,6 +54,11 @@
 </head>
 <body>
   
+    @if(isAdmin)
+    <button class="button" onclick="goToAdminPage()">Go to Admin page</button>
+    @endif
+
+
     <div class="content">
       <div class="content">
           <img style="width: 300px; margin: auto;" src="/images/logo.png" />
@@ -79,6 +84,9 @@
     }
     function goToLobby() {
       window.location.href = "{{ ('/lobby') }}";
+    }
+    function goToAdminPage() {
+      window.location.href = "{{ ('/admin/users') }}";
     }
   </script>
 </body>

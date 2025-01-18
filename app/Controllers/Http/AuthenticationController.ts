@@ -62,6 +62,7 @@ export default class AuthenticationController {
     }
 
     async logoff({ response, request, view, auth }: HttpContextContract) {
+        console.log("Deconnexion")
         await auth.use('web').logout();
         return view.render('home');
     }
